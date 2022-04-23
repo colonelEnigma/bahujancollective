@@ -89,15 +89,16 @@ router.post('/profile', async (req, res) => {
             return res.status(400).send('uploading error')
         }
 
+        const npath  = req.file.path.replace(/public/g, '');
         const newFile = new UserFile({
             name: req.file.originalname,
-            path: req.file.path
+            path: npath
         });
 
 
         try {
             const savedFile = await newFile.save();
-            res.send({ "path": req.file.path });
+            res.send({ "path": savedFile.path });
             logger.customLogger.log('info', `file saved`);
         } catch (err) {
             logger.customLogger.log('error', `error while uplaoding...${err}`);
