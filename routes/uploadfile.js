@@ -97,8 +97,7 @@ router.post('/profile', async (req, res) => {
 
         try {
             const savedFile = await newFile.save();
-            console.log("new...", savedFile);
-            res.send(`user file uploaded to ... ${req.file.path}`);
+            res.send({ "path": req.file.path });
             logger.customLogger.log('info', `file saved`);
         } catch (err) {
             logger.customLogger.log('error', `error while uplaoding...${err}`);
