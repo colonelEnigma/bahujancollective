@@ -10,11 +10,12 @@ router.get('/details/email', verifyToken, async (req, res) => {
     const { email } = req.body;
 
     //check if user already exists
-    const user = await User.findOne({ email: email });
+    let user = await User.findOne({ email: email });
     if (!user) {
         logger.customLogger.log('error', 'email not found');
         return res.status(400).send('email not found')
     }
+    user.password = undefined;
     res.status(200).send(user);
 })
 
@@ -25,11 +26,12 @@ router.get('/details/id', verifyToken, async (req, res) => {
     const { uid } = req.body;
 
     //check if user already exists
-    const user = await User.findById({ _id: uid });
+    let user = await User.findById({ _id: uid });
     if (!user) {
         logger.customLogger.log('error', 'email not found');
         return res.status(400).send('email not found')
     }
+    user.password = undefined;
     res.status(200).send(user);
 })
 
@@ -40,11 +42,12 @@ router.get('/details/username', verifyToken, async (req, res) => {
     const { username } = req.body;
 
     //check if user already exists
-    const user = await User.findOne({ username: username });
+    let user = await User.findOne({ username: username });
     if (!user) {
         logger.customLogger.log('error', 'email not found');
         return res.status(400).send('email not found')
     }
+    user.password = undefined;
     res.status(200).send(user);
 })
 

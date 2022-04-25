@@ -8,8 +8,10 @@ const multer = require('multer');
 const ms = require('../helper/uploadConfig');
 const UserFile = require('../models/UserFile');
 const verifyToken = require('../helper/verifyToken');
+const UserVerification = require('../models/UserVerification');
 const upload = multer({ storage: ms.multerStorage });
-
+const sendEmail = require('../helper/sendEmail');
+const crypto = require("crypto");
 
 
 router.post('/register', upload.single('photo'), async (req, res) => {
@@ -48,11 +50,25 @@ router.post('/register', upload.single('photo'), async (req, res) => {
         religion: req.body.religion,
         artist: req.body.artist ? req.body.artist : false,
         writer: req.body.writer ? req.body.writer : false,
-        photo: req.body.photo ? req.body.photo : ''
+        photo: req.body.photo ? req.body.photo : '',
+        verified: false
     });
     try {
         const savedUser = await user.save();
-        res.send(`${savedUser.username} is successfully registered`);
+        // res.send(`${savedUser.username} is successfully registered`);
+
+        let token = await new UserVerification({
+            userId: savedUser._id,
+            token: 'uioo123',
+        }).save();
+
+        console.log("token", token);
+
+        const message = `${process.env.BASE_URL}/auth/verify/${savedUser.id}/${token.token}`;
+        await sendEmail(user.email, "Verify Email", message);
+        console.log("message...", message);
+
+        res.send("An Email sent to your account please verify");
         logger.customLogger.log('info', `user saved`);
 
     } catch (err) {
@@ -71,7 +87,7 @@ router.post('/login', async (req, res) => {
     }
 
     //check if user already exists
-    const user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({ email: req.body.email });
     if (!user) {
         logger.customLogger.log('error', 'email not found');
         return res.status(400).send('email not found')
@@ -90,9 +106,33 @@ router.post('/login', async (req, res) => {
         username: user.username
     }
     const token = jwt.sign(payload, process.env.TOKEN_SECRET)
+    user.password = undefined;
     res.header('auth-token', token).send(user);
     logger.customLogger.log('info', 'token sent');
 
 })
+
+
+router.get("/verify/:id/:token", async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.params.id });
+        if (!user) return res.status(400).send("Invalid link");
+
+        const token = await UserVerification.findOne({
+            userId: user._id,
+            token: req.params.token,
+        });
+        if (!token) return res.status(400).send("Invalid link");
+
+        await User.updateOne({ _id: user._id, verified: true });
+        await UserVerification.findByIdAndRemove(token._id);
+
+        res.send("email verified sucessfully");
+    } catch (error) {
+        res.status(400).send("An error occured");
+    }
+});
+
+
 
 module.exports = router;

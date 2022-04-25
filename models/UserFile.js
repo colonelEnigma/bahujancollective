@@ -14,7 +14,7 @@ const fileSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
-});
+}, { timestamps: true });
 
 // Creating a Model from that Schema
 module.exports = mongoose.model("UserFile", fileSchema);

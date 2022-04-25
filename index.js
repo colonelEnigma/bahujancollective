@@ -7,7 +7,6 @@ const morgan = require('morgan');
 const userRoute = require('./routes/user');
 // const clientRoute = require('./routes/clients');
 const cors = require('cors');
-const verifyToken = require('./helper/verifyToken');
 
 require('dotenv').config()
 const port = process.env.PORT || 3001
