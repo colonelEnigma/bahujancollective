@@ -1,0 +1,66 @@
+{
+    "title": "Story Hours",
+    "subtitle": "Four Week Free Progressive Writing Workshop.",
+    "about": {
+        "title": "about",
+        "description": "Bahujan Story Hour is a monthly initiative that welcomes Bahujans to reverberate, rejoice, share and talk about their experiences and understandings on a unique topic curated for every story hour. <It is a space to amplify and strengthen Bahujan voices> (subject to change). Participation at the story hour does not require any prior experience or qualification as a speaker but requires basic working/oral knowledge of English. In addition, the selected speakers will be provided with guidance and mentorship support for writing and speaking prior to when the story hour shall be conducted. We aim to archive each story hour in the form of a podcast, as an effort to document the valued experiences shared by the speakers and make those accessible to a wider audience. ",
+        "startDate": "232:12",
+        "endDate": "23:644",
+        "subDescription": "ksjda",
+        "note": "sdjs"
+    },
+    "registration": {
+        "title": "wqw",
+        "events": [
+            {
+                "title": "Session 1",
+                "regisrationStatus": "inActive",
+                "startDateTime": "123:11",
+                "endDateTime": "12:32",
+                "topics": [
+                    "Topics for the session",
+                    "Topics for the session"
+                ],
+                "host": [
+                    "Host Names1",
+                    "Host Names2"
+                ],
+                "coach": [
+                    "Coach Name1",
+                    "Coach Name2"
+                ],
+                "registration": "",
+                "link": "abcd@gmail.com"
+            },
+            {
+                "title": "Session 2",
+                "regisrationStatus": "inActive",
+                "startDateTime": "123:11",
+                "endDateTime": "12:32",
+                "topics": [
+                    "Topics for the session",
+                    "Topics for the session"
+                ],
+                "host": [
+                    "Host Names1",
+                    "Host Names2"
+                ],
+                "coach": [
+                    "Coach Name1",
+                    "Coach Name2"
+                ],
+                "registration": "",
+                "link": "abcd@gmail.com"
+            }
+        ]
+    },
+    "aditionalDetails": {
+        "lable": "Additional Details",
+        "points": [
+            "The selected speakers and listeners will be communicated through e-mail shortly by the team on registration.",
+            "Speakers shall be monetarily compensated an amount of INR 250 for their participation and consent to produce a podcast of the session.",
+            "While the first story hour shall be hosted in English, we are directing efforts to ensure that we expand our initiative to regional languages in the upcoming sessions. We request your patience and support.",
+            "<The seats have been set up solely to ensure diversity and representation in each cohort that we host for the story hour. Please select from the options as available and that best intersect with who you identify as. You are however free to register under the general Bahujan Category option as well> (suggestion to provide this information on the screen prior to the display of tickets, becomes easy to follow and understand)"
+        ]
+    }
+}

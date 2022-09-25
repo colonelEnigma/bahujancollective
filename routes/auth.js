@@ -16,6 +16,7 @@ const crypto = require("crypto");
 
 router.post('/register', upload.single('photo'), async (req, res) => {
     // validating req body
+    // console.log("boddy...", req.body.name);
     const { error } = registrationValidation(req.body);
     if (error) {
         logger.customLogger.log('error', error.details[0].message);
@@ -30,46 +31,46 @@ router.post('/register', upload.single('photo'), async (req, res) => {
     }
 
     //check if username already exists
-    const usernameExists = await User.findOne({ username: req.body.username });
-    if (usernameExists) {
-        logger.customLogger.log('error', 'username taken');
-        return res.status(400).send('username exists')
-    }
+    // const usernameExists = await User.findOne({ username: req.body.username });
+    // if (usernameExists) {
+    //     logger.customLogger.log('error', 'username taken');
+    //     return res.status(400).send('username exists')
+    // }
 
     // hashing pass
     const salt = await bcrypt.genSalt(10);
     const hashPass = await bcrypt.hash(req.body.password, salt)
 
     const user = new User({
-        name: req.body.name,
         email: req.body.email,
         password: hashPass,
-        username: req.body.username,
-        gender: req.body.gender,
-        caste: req.body.caste,
-        religion: req.body.religion,
-        artist: req.body.artist ? req.body.artist : false,
-        writer: req.body.writer ? req.body.writer : false,
-        photo: req.body.photo ? req.body.photo : '',
-        verified: false
     });
+    // name: req.body.name,
+    // username: req.body.username,
+    // gender: req.body.gender,
+    // caste: req.body.caste,
+    // religion: req.body.religion,
+    // artist: req.body.artist ? req.body.artist : false,
+    // writer: req.body.writer ? req.body.writer : false,
+    // photo: req.body.photo ? req.body.photo : '',
+    // verified: false
     try {
         const savedUser = await user.save();
         // res.send(`${savedUser.username} is successfully registered`);
 
-        let token = await new UserVerification({
-            userId: savedUser._id,
-            token: 'uioo123',
-        }).save();
+        // let token = await new UserVerification({
+        //     userId: savedUser._id,
+        //     token: 'uioo123',
+        // }).save();
 
-        console.log("token", token);
+        // console.log("token", token);
 
-        const message = `${process.env.BASE_URL}/auth/verify/${savedUser.id}/${token.token}`;
-        await sendEmail(user.email, "Verify Email", message);
-        console.log("message...", message);
+        // const message = `${process.env.BASE_URL}/auth/verify/${savedUser.id}/${token.token}`;
+        // await sendEmail(user.email, "Verify Email", message);
+        // console.log("message...", message);
 
-        res.send("An Email sent to your account please verify");
-        logger.customLogger.log('info', `user saved`);
+        res.status(200).send("User registration successful");
+        logger.customLogger.log('info', `user created`);
 
     } catch (err) {
         logger.customLogger.log('error', `error while registering...${err}`);
@@ -93,6 +94,7 @@ router.post('/login', async (req, res) => {
         return res.status(400).send('email not found')
     }
 
+
     //check if pass is correct
     const validPass = await bcrypt.compare(req.body.password, user.password)
     if (!validPass) {
@@ -107,31 +109,31 @@ router.post('/login', async (req, res) => {
     }
     const token = jwt.sign(payload, process.env.TOKEN_SECRET)
     user.password = undefined;
-    res.header('auth-token', token).send(user);
+    res.header('auth-token', token).send('login success');
     logger.customLogger.log('info', 'token sent');
 
 })
 
 
-router.get("/verify/:id/:token", async (req, res) => {
-    try {
-        const user = await User.findOne({ _id: req.params.id });
-        if (!user) return res.status(400).send("Invalid link");
+// router.get("/verify/:id/:token", async (req, res) => {
+//     try {
+//         const user = await User.findOne({ _id: req.params.id });
+//         if (!user) return res.status(400).send("Invalid link");
 
-        const token = await UserVerification.findOne({
-            userId: user._id,
-            token: req.params.token,
-        });
-        if (!token) return res.status(400).send("Invalid link");
+//         const token = await UserVerification.findOne({
+//             userId: user._id,
+//             token: req.params.token,
+//         });
+//         if (!token) return res.status(400).send("Invalid link");
 
-        await User.updateOne({ _id: user._id, verified: true });
-        await UserVerification.findByIdAndRemove(token._id);
+//         await User.updateOne({ _id: user._id, verified: true });
+//         await UserVerification.findByIdAndRemove(token._id);
 
-        res.send("email verified sucessfully");
-    } catch (error) {
-        res.status(400).send("An error occured");
-    }
-});
+//         res.send("email verified sucessfully");
+//     } catch (error) {
+//         res.status(400).send("An error occured");
+//     }
+// });
 
 
 
