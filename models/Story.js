@@ -23,15 +23,15 @@ const aboutSchema = mongoose.Schema({
 }, { timestamps: true });
 
 
-const additionalDetailsSchema = mongoose.Schema({
-    lable: {
-        type: String,
-    },
-    points: {
-        type: Array,
-        default: []
-    }
-}, { timestamps: true });
+// const additionalDetailsSchema = mongoose.Schema({
+//     lable: {
+//         type: String,
+//     },
+//     points: {
+//         type: Array,
+//         default: []
+//     }
+// }, { timestamps: true });
 
 
 const StorySchema = mongoose.Schema({
@@ -47,7 +47,9 @@ const StorySchema = mongoose.Schema({
     registration: [
         { type: Schema.Types.ObjectId, ref: 'EventRegistration' }
     ],
-    aditionalDetails: [additionalDetailsSchema]
+    aditionalDetails: [
+        { type: Schema.Types.ObjectId, ref: 'AdditionalDetail' }
+    ]
 }, { timestamps: true });
 
 

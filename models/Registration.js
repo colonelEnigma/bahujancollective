@@ -1,14 +1,43 @@
 const mongoose = require('mongoose');
 
-const RegistrationSchema = mongoose.Schema({
+const eventSchema = mongoose.Schema({
     title: {
         type: String,
-        min: 5
     },
-    events: [
-        { type: Schema.Types.ObjectId, ref: 'EventStory' }
-    ]
+    regisrationStatus: {
+        type: String,
+    },
+    startDateTime: {
+        type: String
+    },
+    endDateTime: {
+        type: String
+    },
+    topics: {
+        type: Array,
+        default: []
+    },
+    host: {
+        type: Array,
+        default: []
+    },
+    coach: {
+        type: Array,
+        default: []
+    },
+    link: {
+        type: String,
+        required: false,
+    }
 
 }, { timestamps: true });
 
-module.exports  = mongoose.model('EventRegistration', RegistrationSchema);
+const RegistrationSchema = mongoose.Schema({
+    title: {
+        type: String,
+    },
+    events: [eventSchema]
+
+}, { timestamps: true });
+
+module.exports = mongoose.model('EventRegistration', RegistrationSchema);

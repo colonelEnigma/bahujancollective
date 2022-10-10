@@ -31,6 +31,11 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json({ extended: true, limit: '50mb' }));
 app.use(express.static('public'));
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Expose-Headers", 'auth-token');
+    next();
+});
 
 app.get('/', (req, res) => {
     res.send('welcome to bahujan')

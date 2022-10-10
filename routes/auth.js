@@ -69,7 +69,7 @@ router.post('/register', upload.single('photo'), async (req, res) => {
         // await sendEmail(user.email, "Verify Email", message);
         // console.log("message...", message);
 
-        res.status(200).send("User registration successful");
+        res.status(200).send({ 'message': 'User registration successful' });
         logger.customLogger.log('info', `user created`);
 
     } catch (err) {
@@ -91,7 +91,7 @@ router.post('/login', async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user) {
         logger.customLogger.log('error', 'email not found');
-        return res.status(400).send('email not found')
+        return res.status(400).send({ 'message': 'email not found' })
     }
 
 
@@ -99,7 +99,7 @@ router.post('/login', async (req, res) => {
     const validPass = await bcrypt.compare(req.body.password, user.password)
     if (!validPass) {
         logger.customLogger.log('error', 'invalid pass');
-        return res.status(400).send('invalid pass')
+        return res.status(400).send({ 'message': 'invalid pass' })
     }
 
     // assign token
@@ -109,7 +109,7 @@ router.post('/login', async (req, res) => {
     }
     const token = jwt.sign(payload, process.env.TOKEN_SECRET)
     user.password = undefined;
-    res.header('auth-token', token).send('login success');
+    res.header('auth-token', token).send({ 'message': 'login success' });
     logger.customLogger.log('info', 'token sent');
 
 })
