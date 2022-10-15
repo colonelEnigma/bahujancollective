@@ -4,7 +4,6 @@ const logger = require('../helper/logger');
 const verifyToken = require('../helper/verifyToken');
 const Story = require('../models/Story');
 const Registration = require('../models/Registration');
-const EventStory = require('../models/EventStory');
 const { default: mongoose } = require('mongoose');
 const AdditionalDetails = require('../models/AdditionalDetails');
 
